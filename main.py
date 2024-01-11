@@ -2,14 +2,18 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 import time
+import os
+from dotenv import load_dotenv
 
-un="2110991434"
-ps="63a22edb"
-DRIVER_PATH="C:\automation\edgedriver_win64\msedgedriver.exe"
+load_dotenv()
+
+un=os.environ.get("un")
+ps=os.environ.get("ps")
+DRIVER_PATH=os.environ.get("DRIVER_PATH")
 
 FROM_TIME="8:00 PM"
 TO_TIME="8:00 PM"
-REASON=". . . . . . . . . . . ."
+REASON="Because I am testing the gatepass application script today TOO"
 class Gatepass():
 
     def __init__(self):
@@ -30,7 +34,11 @@ class Gatepass():
         
     def apply_gatepass(self):
         self.driver.get("https://punjab.chitkara.edu.in//Interface/Student/studentGatePass.php")
-        time.sleep(5)
+        time.sleep(4)
+
+        self.driver.find_element(By.ID,"leaveType1").click()
+        time.sleep(2)
+        
         self.driver.find_element(By.ID,"checkoutTime").send_keys(FROM_TIME)
         time.sleep(2)
 
