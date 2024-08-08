@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import Select
 import time
 import os
 from dotenv import load_dotenv
@@ -9,17 +10,14 @@ load_dotenv()
 
 un=os.environ.get("un")
 ps=os.environ.get("ps")
-DRIVER_PATH=os.environ.get("DRIVER_PATH")
 
 FROM_TIME="8:00 PM"
 TO_TIME="8:00 PM"
-REASON="Because I am testing the gatepass application script today TOO"
+REASON="Because I am testing the gatepass application script today too"
 class Gatepass():
 
     def __init__(self):
-        # self.service=webdriver.EdgeService()
-        # self.options = webdriver.EdgeOptions()
-        self.driver = webdriver.Edge()
+        self.driver = webdriver.Chrome()
 
     def login(self):
 
@@ -27,15 +25,21 @@ class Gatepass():
 
         self.driver.find_element(By.ID,'username').send_keys(un)
 
+        time.sleep(2)
         self.driver.find_element(By.ID,"password").send_keys(ps)
 
+        select=Select(self.driver.find_element(By.ID,'instituteId'))
+
+        time.sleep(2)
+        select.select_by_visible_text('CUIET')
+        time.sleep(2)
         # enter key
         self.driver.find_element(By.ID,"password").send_keys(Keys.ENTER)
         
     def apply_gatepass(self):
         self.driver.get("https://punjab.chitkara.edu.in//Interface/Student/studentGatePass.php")
-        time.sleep(4)
-
+        time.sleep(2)
+        self.driver.find_element(By.XPATH,'/html/body/div[3]/div/div/a').click()
         self.driver.find_element(By.ID,"leaveType1").click()
         time.sleep(2)
         
@@ -55,10 +59,10 @@ class Gatepass():
         alert.accept()
         alert.accept()
         time.sleep(5)
-        # handle calender
 
     
 bot=Gatepass()
 bot.login()
+time.sleep(2)
 bot.apply_gatepass()
 
